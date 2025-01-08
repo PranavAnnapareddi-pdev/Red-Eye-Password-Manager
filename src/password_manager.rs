@@ -67,4 +67,27 @@ impl PasswordEntry {
 
         None // Return None if no match is found
     }
+
+    pub fn list_accounts() -> Vec<String> {
+        let file_path = "passwords.json";
+        let mut data = Vec::new();
+
+        // Try reading the file
+        if let Ok(mut file) = std::fs::File::open(file_path) {
+            file.read_to_end(&mut data).unwrap_or_default();
+        } else {
+            return Vec::new(); // Return an empty list if the file doesn't exist
+        }
+
+        // Parse the file content into a vector of PasswordEntry
+        let entries: Vec<PasswordEntry> = serde_json::from_slice(&data).unwrap_or_else(|_| Vec::new());
+
+        // Extract account names
+        entries.into_iter().map(|entry| entry.account).collect()
+    }
+
+
+
+
+
 }

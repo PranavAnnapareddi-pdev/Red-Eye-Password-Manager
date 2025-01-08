@@ -38,7 +38,17 @@ pub fn parse_arguments() {
                 }
             }
         },
-        "list" => println!("Listing passwords..."),
+        "list" => {
+            let accounts = PasswordEntry::list_accounts();
+            if accounts.is_empty() {
+                println!("No accounts saved.");
+            } else {
+                println!("Saved accounts:");
+                for account in accounts {
+                    println!("- {}", account);
+                }
+            }
+        },
         _ => println!("Unknown command: {}", command),
     }
 }
